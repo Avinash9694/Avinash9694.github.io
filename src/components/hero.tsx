@@ -14,7 +14,7 @@ export function Hero() {
       <div className={`${styles.inner} container`}>
         <p className={`${styles.status} mono`}>
           <span className={styles.statusDot} aria-hidden="true" />
-          Currently: lead contributor on a Tauri + React + Rust cloud-ops desktop app
+          Currently: lead contributor on a Tauri + React cloud-ops desktop app
         </p>
 
         <h1 id="hero-title" className={styles.title}>
@@ -31,7 +31,7 @@ export function Hero() {
 
         <p className={styles.positioning}>
           I build web and desktop software that stays correct when the network, the third-party API
-          or the user misbehaves. Four-plus years across React, TypeScript, Node and Rust — lately
+          or the user misbehaves. Four-plus years across React, TypeScript, Node.js and AWS — lately
           cloud-operations tooling with real security and reliability constraints.
         </p>
 

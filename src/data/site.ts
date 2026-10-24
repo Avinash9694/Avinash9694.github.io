@@ -1,7 +1,7 @@
 export const site = {
   name: 'Avinash Sahu',
   title: 'Software Developer',
-  tagline: 'React, TypeScript, Rust, Cloud',
+  tagline: 'React, TypeScript, Node.js, AWS',
   location: 'Hyderabad, India',
   email: 'avinashsahu1994@gmail.com',
   github: 'https://github.com/Avinash9694',
