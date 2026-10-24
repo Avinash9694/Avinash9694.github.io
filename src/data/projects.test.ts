@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { featuredProjects, gridProjects, projects } from './projects';
 
@@ -50,10 +52,15 @@ describe('projects data', () => {
     }
   });
 
-  it('points any screenshot at a root-relative public asset', () => {
+  it('ships a screenshot for every live project, and the file exists under public/', () => {
     for (const project of projects) {
-      if (project.screenshot === undefined) continue;
-      expect(project.screenshot.startsWith('/')).toBe(true);
+      if (project.live === null) {
+        expect(project.screenshot, `${project.slug} has no live site`).toBeUndefined();
+        continue;
+      }
+      expect(project.screenshot, `${project.slug} screenshot`).toMatch(/^\/screenshots\/.+\.webp$/);
+      const onDisk = join(process.cwd(), 'public', project.screenshot ?? '');
+      expect(existsSync(onDisk), `${onDisk} exists`).toBe(true);
     }
   });
 });

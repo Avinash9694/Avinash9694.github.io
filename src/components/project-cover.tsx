@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import type { Project } from '../data/projects';
 import styles from './project-cover.module.css';
 
@@ -39,8 +40,8 @@ function Motif({ kind, id }: { kind: Motif; id: string }) {
               <line x1="0" y1="0" x2="0" y2="18" stroke="#fff" strokeOpacity="0.2" />
             </pattern>
           </defs>
-          <rect x="180" y="0" width="220" height="240" fill={`url(#${id}-p)`} />
-          <rect x="178" y="0" width="1.5" height="240" fill="#fff" fillOpacity="0.4" />
+          <rect x="180" y="0" width="220" height="250" fill={`url(#${id}-p)`} />
+          <rect x="178" y="0" width="1.5" height="250" fill="#fff" fillOpacity="0.4" />
         </>
       );
     case 'dots':
@@ -51,7 +52,7 @@ function Motif({ kind, id }: { kind: Motif; id: string }) {
               <circle cx="2" cy="2" r="1.6" fill="#fff" fillOpacity="0.32" />
             </pattern>
           </defs>
-          <rect width="400" height="240" fill={`url(#${id}-p)`} />
+          <rect width="400" height="250" fill={`url(#${id}-p)`} />
           <rect
             x="230"
             y="60"
@@ -68,11 +69,11 @@ function Motif({ kind, id }: { kind: Motif; id: string }) {
     case 'blocks':
       return (
         <g fill="#fff">
-          <rect x="40" y="150" width="60" height="60" rx="8" fillOpacity="0.1" />
-          <rect x="110" y="80" width="60" height="130" rx="8" fillOpacity="0.18" />
-          <rect x="180" y="120" width="60" height="90" rx="8" fillOpacity="0.1" />
-          <rect x="250" y="40" width="60" height="170" rx="8" fillOpacity="0.26" />
-          <rect x="320" y="100" width="60" height="110" rx="8" fillOpacity="0.14" />
+          <rect x="40" y="150" width="60" height="70" rx="8" fillOpacity="0.1" />
+          <rect x="110" y="80" width="60" height="140" rx="8" fillOpacity="0.18" />
+          <rect x="180" y="120" width="60" height="100" rx="8" fillOpacity="0.1" />
+          <rect x="250" y="40" width="60" height="180" rx="8" fillOpacity="0.26" />
+          <rect x="320" y="100" width="60" height="120" rx="8" fillOpacity="0.14" />
         </g>
       );
     case 'waves':
@@ -99,12 +100,19 @@ export function ProjectCover({ project, index }: ProjectCoverProps) {
   const id = `cover-${project.slug}`;
   const motif = motifFor(project.slug);
   const label = String(index + 1).padStart(2, '0');
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  // A cached image can finish before React attaches onLoad; `complete` covers that case.
+  useEffect(() => {
+    if (imgRef.current?.complete) setLoaded(true);
+  }, []);
 
   return (
     <div className={styles.cover}>
       <svg
         className={styles.art}
-        viewBox="0 0 400 240"
+        viewBox="0 0 400 250"
         preserveAspectRatio="xMidYMid slice"
         role="img"
         aria-label={`${project.title} cover art`}
@@ -119,16 +127,21 @@ export function ProjectCover({ project, index }: ProjectCoverProps) {
             <stop offset="1" stopColor="#000" stopOpacity="0" />
           </radialGradient>
         </defs>
-        <rect width="400" height="240" fill={`url(#${id}-g)`} />
+        <rect width="400" height="250" fill={`url(#${id}-g)`} />
         <Motif kind={motif} id={id} />
-        <rect width="400" height="240" fill={`url(#${id}-v)`} />
+        <rect width="400" height="250" fill={`url(#${id}-v)`} />
       </svg>
       {project.screenshot ? (
         <img
-          className={styles.screenshot}
+          ref={imgRef}
+          className={`${styles.screenshot} ${loaded ? styles.loaded : ''}`}
           src={project.screenshot}
           alt={`Screenshot of ${project.title}`}
+          width={1200}
+          height={750}
           loading="lazy"
+          decoding="async"
+          onLoad={() => setLoaded(true)}
         />
       ) : null}
       <span className={`${styles.index} mono`} aria-hidden="true">
