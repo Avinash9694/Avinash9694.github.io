@@ -33,6 +33,7 @@ export function Projects() {
               key={project.slug}
               project={project}
               index={featuredProjects.length + i}
+              wide={i === gridProjects.length - 1}
               delay={(i % 3) * 80}
             />
           ))}

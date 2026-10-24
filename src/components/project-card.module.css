@@ -24,13 +24,16 @@
   transform: translateY(-2px);
 }
 
-.article:hover :global(svg),
-.article:hover :global(img) {
-  transform: scale(1.03);
-}
-
 .coverLink {
   display: block;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .article:hover .coverLink svg,
+  .article:hover .coverLink img {
+    transform: scale(1.03);
+  }
 }
 
 .body {
@@ -39,6 +42,7 @@
   gap: 10px;
   padding: var(--space-3);
   flex: 1;
+  min-width: 0;
 }
 
 .head {
@@ -146,5 +150,50 @@
 @media (min-width: 720px) {
   .featured .body {
     padding: var(--space-4);
+  }
+}
+
+/*
+ * Orphan guard: when the grid's last card would sit alone in its row (2 columns from 720px,
+ * 3 from 1024px), span the row and lay the card out horizontally instead.
+ */
+@media (min-width: 720px) and (max-width: 1023.98px) {
+  .wide:last-child:nth-child(2n + 1) {
+    grid-column: 1 / -1;
+  }
+
+  .wide:last-child:nth-child(2n + 1) .article {
+    flex-direction: row;
+  }
+
+  .wide:last-child:nth-child(2n + 1) .coverLink {
+    flex: 0 0 44%;
+    border-bottom: 0;
+    border-right: 1px solid var(--line);
+  }
+}
+
+@media (min-width: 1024px) {
+  .wide:last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+  }
+
+  .wide:last-child:nth-child(3n + 1) .article {
+    flex-direction: row;
+  }
+
+  .wide:last-child:nth-child(3n + 1) .coverLink {
+    flex: 0 0 38%;
+    border-bottom: 0;
+    border-right: 1px solid var(--line);
+  }
+
+  .wide:last-child:nth-child(3n + 1) .body {
+    padding: var(--space-4);
+    justify-content: center;
+  }
+
+  .wide:last-child:nth-child(3n + 1) .description {
+    max-width: 62ch;
   }
 }

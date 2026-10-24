@@ -8,12 +8,22 @@ interface ProjectCardProps {
   project: Project;
   index: number;
   size?: 'featured' | 'default';
+  /** When this is the grid's last card, let it span a row that would otherwise leave it alone. */
+  wide?: boolean;
   delay?: number;
 }
 
-export function ProjectCard({ project, index, size = 'default', delay = 0 }: ProjectCardProps) {
+export function ProjectCard({
+  project,
+  index,
+  size = 'default',
+  wide = false,
+  delay = 0,
+}: ProjectCardProps) {
   const primaryHref = project.live ?? project.source;
-  const className = size === 'featured' ? `${styles.card} ${styles.featured}` : styles.card;
+  const className = [styles.card, size === 'featured' && styles.featured, wide && styles.wide]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <Reveal as="li" className={className} delay={delay}>
