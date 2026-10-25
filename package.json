@@ -1,45 +1,49 @@
 {
   "name": "avinash9694.github.io",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
-  "description": "Portfolio of Avinash Sahu — software developer working in React, TypeScript, Rust and the cloud.",
+  "description": "Personal homepage of Avinash Sahu, a software developer in Hyderabad.",
   "homepage": "https://avinash9694.github.io/",
+  "engines": {
+    "node": ">=22.23.4"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
     "lint": "eslint . --max-warnings 0",
-    "typecheck": "tsc -b --noEmit",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "typecheck": "astro check && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "screenshots": "node scripts/optimize-screenshots.mjs"
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "@astrojs/react": "^7.1.1",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "astro": "^7.4.2",
+    "react": "~19.3.1",
+    "react-dom": "~19.3.1",
+    "three": "~0.182.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.1.0",
-    "@types/node": "^26.6.5",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.17.0",
+    "@astrojs/check": "^0.9.12",
+    "@eslint/js": "^9.39.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "~0.182.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-astro": "^1.7.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.16",
-    "globals": "^15.14.0",
-    "jsdom": "^25.0.1",
-    "prettier": "^3.4.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
     "sharp": "^0.35.5",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5",
-    "vitest": "^3.2.7"
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.72.0",
+    "vitest": "^5.0.5"
   }
 }

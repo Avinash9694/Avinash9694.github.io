@@ -1,5 +1,9 @@
 dist
 node_modules
 coverage
+.astro
+package-lock.json
 docs/*.png
 public/*.pdf
+public/**/*.webp
+public/*.png
