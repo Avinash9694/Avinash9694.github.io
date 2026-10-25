@@ -41,13 +41,7 @@ export function Lighting({ tier }: { tier: Tier }) {
         decay={2}
         color="#ffd6a3"
       />
-      <pointLight
-        position={[-7.5, 3.5, 9]}
-        intensity={14}
-        distance={16}
-        decay={2}
-        color="#3ec8ff"
-      />
+      <pointLight position={[-9, 3.5, 9]} intensity={14} distance={16} decay={2} color="#3ec8ff" />
       <pointLight position={[8, 3.5, 2]} intensity={18} distance={18} decay={2} color="#ffb45c" />
       <Environment resolution={tier === 'high' ? 256 : 128} frames={1}>
         <color attach="background" args={['#0a0d16']} />

@@ -19,6 +19,7 @@ A dark floating workspace island (desk, monitor, keyboard, lamp, plant, mug) wit
 ## How it works
 
 - `src/lib/camera-path.ts` holds the camera keyframes (scroll progress, position, look-at). Both are fed through a `CatmullRomCurve3`; `progressToT` maps scroll progress onto the curve so keyframe `i` is reached at exactly `t = i / (n - 1)`.
+- `src/lib/framing.ts` mirrors the overlay layout: for each station it works out the free space beside or above the card and the camera rig applies it as a view offset and zoom, so the subject never sits under text at any viewport size.
 - `src/lib/progress-map.ts` splits progress into five equal section bands and places sub-stations for the three roles and nine projects. Nav links, the progress rail, arrow keys and the project stepper all just scroll to a station; the camera follows.
 - Scrolling is Lenis, mapped to a zustand `progress` value by a single GSAP ScrollTrigger over a 600vh spacer. Nothing is pinned.
 - `src/lib/device-tier.ts` picks a tier: `high` (WebGL2, fine pointer, 6+ cores) gets bloom, vignette, grain, a blurred reflector floor and DPR up to 1.75; `medium` drops post-processing, the blur and most particles; `low` (no WebGL, data saver, reduced motion, or a touch device with 4 cores or fewer) renders a static page with no canvas at all. `?tier=high|medium|low` forces one. A `PerformanceMonitor` steps `high` down to `medium` if the frame rate drops.

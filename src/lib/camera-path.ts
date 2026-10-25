@@ -12,8 +12,8 @@ function roleKeyframe(index: number): Keyframe {
   const node = TIMELINE_NODES[index] ?? [0, 0, 0];
   return {
     at: ROLE_STATIONS[index] ?? 0,
-    position: [node[0] + 2.9, node[1] + 1.3, node[2] + 4.0],
-    target: [node[0] + 0.6, node[1] + 0.1, node[2]],
+    position: [node[0] + 3.2, node[1] + 1.1, node[2] + 4.0],
+    target: [node[0], node[1] + 0.1, node[2]],
   };
 }
 
@@ -23,20 +23,20 @@ function projectKeyframe(index: number): Keyframe {
   return {
     at: PROJECT_STATIONS[index] ?? 0,
     position: [x, y + 0.2, slot.z + 3.6],
-    target: [x + 0.4, y - 0.1, slot.z - 4],
+    target: [x, y - 0.1, slot.z - 4],
   };
 }
 
 export const KEYFRAMES: Keyframe[] = [
-  { at: 0, position: [0, 3.3, 11.6], target: [0, 1.95, -0.4] },
-  { at: 0.15, position: [0.8, 3.1, 10.6], target: [0, 1.9, -0.4] },
-  { at: 0.225, position: [2.4, 1.5, 2.3], target: [0, 1.0, -0.5] },
-  { at: 0.36, position: [2.0, 1.45, 2.05], target: [0, 1.0, -0.5] },
-  { at: 0.395, position: [-2.6, 3.4, 10.5], target: [-6.5, 1.6, 13] },
+  { at: 0, position: [0, 3.6, 13], target: [0, 1.95, -0.4] },
+  { at: 0.15, position: [0.8, 3.4, 12], target: [0, 1.9, -0.4] },
+  { at: 0.225, position: [2.75, 1.7, 2.75], target: [0.4, 1.02, -0.5] },
+  { at: 0.36, position: [2.35, 1.65, 2.5], target: [0.4, 1.02, -0.5] },
+  { at: 0.395, position: [-2.6, 3.4, 10.5], target: [-8, 1.6, 13] },
   ...ROLE_STATIONS.map((_, i) => roleKeyframe(i)),
   ...PROJECT_STATIONS.map((_, i) => projectKeyframe(i)),
-  { at: 0.86, position: [0.5, 9.6, 8.4], target: [0, 0.7, -0.5] },
-  { at: 1, position: [-1.6, 10.4, 6.8], target: [0, 0.7, -0.5] },
+  { at: 0.86, position: [0.6, 12.2, 10.8], target: [0, 1.2, -0.4] },
+  { at: 1, position: [-1.4, 13, 9.2], target: [0, 1.2, -0.4] },
 ];
 
 /**

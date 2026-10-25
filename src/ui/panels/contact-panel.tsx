@@ -5,7 +5,7 @@ import styles from '../overlay.module.css';
 export function ContactPanel() {
   return (
     <>
-      <div className={styles.card}>
+      <div className={`panel ${styles.card}`}>
         <h2 className="eyebrow" id="contact-title">
           Contact
         </h2>

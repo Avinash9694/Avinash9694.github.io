@@ -27,6 +27,14 @@
   color: var(--text);
 }
 
+.label {
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(6, 8, 15, 0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
 .item[aria-current='true'] {
   color: var(--amber);
 }
@@ -48,11 +56,13 @@
   box-shadow: 0 0 10px var(--amber);
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1199px) {
   .label {
     display: none;
   }
+}
 
+@media (max-width: 860px) {
   .rail {
     right: 10px;
     gap: 10px;

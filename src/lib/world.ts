@@ -11,8 +11,8 @@ export const WORLD = {
   nameCenter: [0, 2.95, -0.55] as Vec3,
   lamp: [-1.55, 0.8, -0.35] as Vec3,
   /** Oldest role furthest out in front of the island, newest nearest it. */
-  timeline: { x: -7.5, y: 1.5, zStart: 13, zStep: -4.5 },
-  helix: { x: 9.5, y: 1.9, zStart: 9, zStep: 2.3, radius: 2.4, turn: Math.PI * 0.46 },
+  timeline: { x: -9, y: 1.5, zStart: 13, zStep: -4.5 },
+  helix: { x: 11.5, y: 1.9, zStart: 9, zStep: 2.3, radius: 2.4, turn: Math.PI * 0.46 },
 } as const;
 
 export function timelineNode(index: number): Vec3 {
