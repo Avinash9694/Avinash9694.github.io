@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/base.astro';
+import SiteHeader from '../components/site-header.astro';
+import Intro from '../components/intro.astro';
+import Work from '../components/work.astro';
+import Experience from '../components/experience.astro';
+import Contact from '../components/contact.astro';
+import SiteFooter from '../components/site-footer.astro';
+---
+
+<Base title="Avinash Sahu, software developer">
+  <a class="skip-link" href="#main">
+    Skip to content
+  </a>
+  <div id="top"></div>
+  <SiteHeader />
+  <main id="main" tabindex="-1">
+    <Intro />
+    <Work />
+    <Experience />
+    <Contact />
+  </main>
+  <SiteFooter />
+</Base>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+</style>

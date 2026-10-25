@@ -1,0 +1,92 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="wrap hero" aria-labelledby="intro-title">
+  <div class="intro">
+    <img
+      class="portrait"
+      src="/avinash-120.webp"
+      srcset="/avinash-120.webp 1x, /avinash-240.webp 2x"
+      width="120"
+      height="120"
+      alt="Avinash Sahu"
+      fetchpriority="high"
+    />
+    <!-- Copy: replace with Avinash's own words -->
+    <h1 id="intro-title">I'm Avinash, a software developer in Hyderabad.</h1>
+    <!-- Copy: replace with Avinash's own words -->
+    <p>
+      I've spent the last four years building web and desktop apps with React, TypeScript and
+      Node.js, mostly on AWS. At Promptora I work on a desktop app for Tessell that scans AWS and
+      Azure accounts, flags problems and helps fix them. I've built its sign-in, its rich-text
+      editor, its usage telemetry, and its Jira, Linear and Slack integrations.
+    </p>
+    <!-- Copy: replace with Avinash's own words -->
+    <p>I'm looking for a senior frontend or full-stack role.</p>
+    <p class="intro-links">
+      <a href={`mailto:${site.email}`}>Email me</a>
+      <a href={site.resume}>Resume (PDF)</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem 3rem;
+    align-items: center;
+    padding-block: 4.5rem 2rem;
+    /* Graph labels may run into the gutter, never past the edge of the page. */
+    overflow-x: clip;
+  }
+
+  .intro {
+    max-width: 36rem;
+  }
+
+  .portrait {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    margin-bottom: 1.75rem;
+    background: var(--rule);
+  }
+
+  h1 {
+    margin: 0 0 1.25rem;
+    font-size: clamp(2rem, 1.4rem + 2.2vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.12;
+  }
+
+  p {
+    margin: 0 0 1rem;
+  }
+
+  .intro-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    margin-top: 1.75rem;
+  }
+
+  .intro-links a {
+    padding-block: 0.25rem;
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 0.5rem;
+      padding-block: 3rem 0;
+    }
+
+    .portrait {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1.25rem;
+    }
+  }
+</style>
