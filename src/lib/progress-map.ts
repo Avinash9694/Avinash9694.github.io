@@ -14,8 +14,12 @@ export function sectionFromProgress(progress: number): number {
 }
 
 /** A settled progress inside a section: a little past the camera's arrival point. */
+/** Where a section's camera comes to rest; the nav jumps here, not just inside the section. */
 export function sectionStation(index: number): number {
   if (index <= 0) return 0;
+  if (index === EXPERIENCE_SECTION) return ROLE_STATIONS[0] ?? index * SECTION_SPAN;
+  if (index === PROJECTS_SECTION) return PROJECT_STATIONS[0] ?? index * SECTION_SPAN;
+  if (index >= SECTION_COUNT - 1) return 1;
   return clamp01(index * SECTION_SPAN + 0.035);
 }
 

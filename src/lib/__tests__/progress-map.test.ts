@@ -1,7 +1,10 @@
 import { roles } from '../../data/experience';
 import { PROJECT_COUNT } from '../../data/projects';
 import { SECTION_COUNT } from '../../data/site';
+import { KEYFRAMES } from '../camera-path';
 import {
+  EXPERIENCE_SECTION,
+  PROJECTS_SECTION,
   PROJECT_STATIONS,
   ROLE_STATIONS,
   activeProject,
@@ -32,6 +35,14 @@ describe('sectionStation', () => {
       expect(sectionFromProgress(sectionStation(i))).toBe(i);
     }
     expect(sectionStation(0)).toBe(0);
+  });
+
+  it('lands exactly on a camera keyframe for the sections with a fixed resting view', () => {
+    const rests = new Set(KEYFRAMES.map((k) => k.at));
+    for (const i of [0, EXPERIENCE_SECTION, PROJECTS_SECTION, SECTION_COUNT - 1]) {
+      expect(rests.has(sectionStation(i)), `section ${i}`).toBe(true);
+    }
+    expect(sectionStation(SECTION_COUNT - 1)).toBe(1);
   });
 });
 
