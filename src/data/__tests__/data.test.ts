@@ -65,7 +65,7 @@ describe('site', () => {
     expect(site.email).toBe('avinashsahu1994@gmail.com');
     expect(site.github).toBe('https://github.com/Avinash9694');
     expect(site.linkedin).toBe('https://www.linkedin.com/in/A-v-i-n-a-s-h/');
-    expect(site.stack).toEqual(['React', 'TypeScript', 'Node.js', 'AWS']);
+    expect(site.stack).toEqual(['React', 'TypeScript', 'Node.js', 'Python', 'AWS']);
   });
 
   it('has five sections in order and plain copy', () => {
