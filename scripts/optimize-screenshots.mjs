@@ -18,6 +18,7 @@ const SOURCES = {
   'Ecommerce-APP': 'Ecommerce-APP-desktop.png',
   'Laundry-cart-frontend': 'Laundry-cart-frontend-dashboard.png',
   '3D-Virtual-Environment': '3D-Virtual-Environment-desktop.png',
+  'Task-Board': 'Task-Board-desktop.png',
 };
 
 await mkdir(outDir, { recursive: true });

@@ -122,12 +122,13 @@ export const projects: Project[] = [
     title: 'Real-time Task Board',
     tagline: 'Trello-style board with drag-and-drop and live presence.',
     description:
-      'A collaborative Trello-style board with drag-and-drop columns and cards, and live presence for everyone on the board over Socket.IO, persisted to SQLite. There is no hosted demo because it needs a long-lived socket server, so the code is the demo.',
+      'A collaborative Trello-style board with drag-and-drop columns and cards. Everyone on the board sees changes and who is online as they happen, synced over Socket.IO and saved to SQLite. Open it in two tabs to watch it update live.',
     tags: ['React', 'TypeScript', 'Socket.IO', 'SQLite'],
-    live: null,
+    live: 'https://avinash9694.github.io/Task-Board/',
     source: 'https://github.com/Avinash9694/Task-Board',
     featured: false,
     cover: { from: '#94a3b8', to: '#334155' },
+    screenshot: '/screenshots/Task-Board.webp',
   },
 ];
 
