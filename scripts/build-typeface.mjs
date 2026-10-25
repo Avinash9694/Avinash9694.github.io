@@ -1,4 +1,4 @@
-// Converts the subset Syne ExtraBold TTF into the three.js typeface JSON that Text3D extrudes.
+// Converts the Sora ExtraBold TTF into the three.js typeface JSON that Text3D extrudes.
 // Usage: node scripts/build-typeface.mjs [source.ttf] [out.json]
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -6,9 +6,9 @@ import { fileURLToPath } from 'node:url';
 import opentype from 'opentype.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const source = path.resolve(process.argv[2] ?? path.join(root, 'public/fonts/syne-extrabold.ttf'));
+const source = path.resolve(process.argv[2] ?? path.join(root, 'public/fonts/sora-extrabold.ttf'));
 const out = path.resolve(
-  process.argv[3] ?? path.join(root, 'public/fonts/syne-extrabold.typeface.json'),
+  process.argv[3] ?? path.join(root, 'public/fonts/sora-extrabold.typeface.json'),
 );
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,-+/&';
 
@@ -48,7 +48,7 @@ const bbox = {
 };
 const json = {
   glyphs,
-  familyName: 'Syne',
+  familyName: 'Sora',
   ascender: round(font.ascender),
   descender: round(font.descender),
   underlinePosition: round(font.tables.post.underlinePosition),
@@ -56,7 +56,7 @@ const json = {
   boundingBox: bbox,
   resolution: 1000,
   original_font_information: {
-    full_font_name: 'Syne ExtraBold',
+    full_font_name: 'Sora ExtraBold',
     license: 'SIL Open Font License 1.1',
   },
   cssFontWeight: '800',

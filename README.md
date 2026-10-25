@@ -24,7 +24,7 @@ A dark floating workspace island (desk, monitor, keyboard, lamp, plant, mug) wit
 - Scrolling is Lenis, mapped to a zustand `progress` value by a single GSAP ScrollTrigger over a 600vh spacer. Nothing is pinned.
 - `src/lib/device-tier.ts` picks a tier: `high` (WebGL2, fine pointer, 6+ cores) gets bloom, vignette, grain, a blurred reflector floor and DPR up to 1.75; `medium` drops post-processing, the blur and most particles; `low` (no WebGL, data saver, reduced motion, or a touch device with 4 cores or fewer) renders a static page with no canvas at all. `?tier=high|medium|low` forces one. A `PerformanceMonitor` steps `high` down to `medium` if the frame rate drops.
 - The static page is also prerendered into `dist/index.html` at build time (`scripts/prerender.mjs`), so the content is there before any JavaScript runs.
-- The 3D letters use a typeface JSON generated from Syne ExtraBold by `scripts/build-typeface.mjs` (`npm run typeface`).
+- The 3D letters use a typeface JSON generated from Sora ExtraBold by `scripts/build-typeface.mjs` (`npm run typeface`).
 
 ## Running it
 
@@ -43,7 +43,7 @@ React 19, TypeScript, Vite, three.js with React Three Fiber, drei and postproces
 
 ## Fonts
 
-Syne and Manrope (SIL Open Font License) via Google Fonts for the page; a subset of Syne ExtraBold and JetBrains Mono ship in `public/fonts/` for the 3D text.
+Sora and Manrope (SIL Open Font License) via Google Fonts for the page; Sora ExtraBold (Latin) and JetBrains Mono ship in `public/fonts/` for the 3D text.
 
 ## License
 
