@@ -16,7 +16,13 @@ import { openProject } from '../lib/open-project';
 import { pointer } from '../lib/pointer';
 import { PROJECTS_SECTION, activeProject, sectionFromProgress } from '../lib/progress-map';
 import { goToProject } from '../lib/scroll-controller';
-import { framingFor, heroFrameScale, rectsOverlap, type ScreenRect } from '../lib/framing';
+import {
+  framingFor,
+  heroFrameScale,
+  railReserve,
+  rectsOverlap,
+  type ScreenRect,
+} from '../lib/framing';
 import { FRAME_SLOTS, WORLD } from '../lib/world';
 import { useSceneStore } from '../store/scene-store';
 
@@ -31,6 +37,8 @@ const TOP_BAR_PX = 80;
 const SPREAD = { x: 1.5, y: 1.9 };
 /** Extra push tried in turn for a neighbour still in the way; past the last it hides. */
 const SPREAD_STEPS = [1, 1.35, 1.75];
+/** Room, in screen units, for the idle bob so a frame never drifts past the edge. */
+const EDGE = 0.04;
 
 interface FrameRefs {
   group: Group | null;
@@ -85,6 +93,7 @@ export default function ProjectFrames() {
     const halfTan = Math.tan((fov * Math.PI) / 360);
     const aspect = size.width / size.height;
     const topLimit = 1 - (2 * TOP_BAR_PX) / size.height;
+    const railLimit = 1 - (2 * railReserve(size.width)) / size.width;
     const toRect = (position: Vector3, scale: number, out: ScreenRect): number => {
       const depth = v.offset.subVectors(position, camera.position).dot(v.forward);
       v.ndc.copy(position).project(camera);
@@ -124,21 +133,23 @@ export default function ProjectFrames() {
         for (const step of inProjects ? SPREAD_STEPS : [1]) {
           v.target.set(
             WORLD.helix.x + (slot.position[0] - WORLD.helix.x) * spreadX * step,
-            WORLD.helix.y +
-              (slot.position[1] - WORLD.helix.y) * spreadY * step +
-              Math.sin(t * 0.7 + i * 1.3) * 0.08,
+            WORLD.helix.y + (slot.position[1] - WORLD.helix.y) * spreadY * step,
             slot.position[2],
           );
           if (!inProjects) break;
-          // A neighbour that would land on the active frame or under the top bar moves out.
+          // A neighbour must stay whole on screen, clear of the active frame, the top bar and the rail.
           const depth = toRect(v.target, 1, v.rect);
           blocked =
             depth < 0.5 ||
             rectsOverlap(v.rect, v.heroRect, 0.03) ||
-            v.rect.y + v.rect.halfH > topLimit;
+            v.rect.y + v.rect.halfH > topLimit ||
+            v.rect.y - v.rect.halfH < -1 + EDGE ||
+            v.rect.x - v.rect.halfW < -1 + EDGE ||
+            v.rect.x + v.rect.halfW > railLimit;
           if (!blocked) break;
         }
         hidden = blocked;
+        v.target.y += Math.sin(t * 0.7 + i * 1.3) * 0.08;
         damp3(g.position, v.target, 0.5, delta);
         v.dummy.position.copy(g.position);
         v.dummy.lookAt(slot.facing[0], slot.facing[1], slot.facing[2]);
