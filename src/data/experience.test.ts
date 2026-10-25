@@ -22,10 +22,13 @@ describe('roles', () => {
     });
   });
 
-  it('keeps each role to a few short points', () => {
+  it('gives every role its points, each a short bullet with no em-dash', () => {
     for (const role of roles) {
-      expect(role.points.length).toBeGreaterThanOrEqual(3);
-      expect(role.points.length).toBeLessThanOrEqual(4);
+      expect(role.points.length, role.company).toBeGreaterThanOrEqual(3);
+      for (const point of role.points) {
+        expect(point.length, point).toBeLessThanOrEqual(260);
+        expect(point).not.toContain('\u2014');
+      }
     }
   });
 });
