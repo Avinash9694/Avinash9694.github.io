@@ -1,88 +1,49 @@
 # avinash9694.github.io
 
-Personal portfolio of Avinash Sahu — software developer in Hyderabad working in React, TypeScript, Rust and the cloud.
+My portfolio, built as one continuous 3D world that you scroll through.
 
-**Live:** [avinash9694.github.io](https://avinash9694.github.io/)
+Live: https://avinash9694.github.io/
 
-![Portfolio home page](docs/screenshot.png)
+![The projects station: nine screenshot frames on a helix, the active one pulled up in front of the camera](docs/screenshot.png)
 
-## Why I built this
+## What it is
 
-I wanted a single page that a hiring manager can read in two minutes: what I have shipped, where, and what it was built with. The old site was a template with skill bars and stock icons; this one is hand-built, dark-first, and puts the project grid first, because the projects are the evidence.
+A dark floating workspace island (desk, monitor, keyboard, lamp, plant, mug) with my name in extruded gold letters above it. Scrolling moves the camera along a path through five stations: Hero, About, Experience, Projects and Contact. The HTML for each section sits on top of the canvas and is the same markup screen readers and crawlers get.
 
-## Features
+- Hero: the name as `Text3D` letters over the island; the monitor runs a typed line through a `RenderTexture`.
+- About: the camera glides to the monitor, which switches to my photo.
+- Experience: three glowing nodes on a luminous tube, oldest first. Each node's card lists every bullet for that role.
+- Projects: nine screenshot frames on a helix the camera flies through. The nearest frame eases up in front of the camera and tilts toward the cursor. Click it, or the Live button, to open the project.
+- Contact: the camera pulls up to show the whole island from above.
 
-- Single page, six sections: hero, selected work, experience timeline, grouped skills, about, contact.
-- Sticky navigation with smooth scroll and active-section highlighting (IntersectionObserver), collapsing to a menu on small screens.
-- Dark-first theme that follows `prefers-color-scheme`, with a toggle persisted in `localStorage` and a `?theme=dark|light` override for sharing.
-- Project cards with real screenshots served as 1200px WebP (351 KB for all eight) in a fixed 16:10 box, lazy-loaded and faded in over a generated SVG cover (gradient plus a deterministic motif derived from the slug) that stays visible while the image loads or when a project has no live site.
-- A grid that never leaves an orphan: when the last card would sit alone in its row, it spans the row as a horizontal card instead, at both the 2- and 3-column breakpoints.
-- Open Graph and Twitter card image (`public/og.png`, rendered from `public/og.html`) so shared links show the hero.
-- Scroll-triggered reveal animations that are disabled entirely under `prefers-reduced-motion`.
-- Semantic landmarks, skip link, labelled icon links, visible focus rings and 40px+ touch targets.
-- Responsive from 360px up with no horizontal overflow.
-- `404.html` that redirects back to the root so stale deep links still land on the site.
+## How it works
 
-## Architecture
+- `src/lib/camera-path.ts` holds the camera keyframes (scroll progress, position, look-at). Both are fed through a `CatmullRomCurve3`; `progressToT` maps scroll progress onto the curve so keyframe `i` is reached at exactly `t = i / (n - 1)`.
+- `src/lib/progress-map.ts` splits progress into five equal section bands and places sub-stations for the three roles and nine projects. Nav links, the progress rail, arrow keys and the project stepper all just scroll to a station; the camera follows.
+- Scrolling is Lenis, mapped to a zustand `progress` value by a single GSAP ScrollTrigger over a 600vh spacer. Nothing is pinned.
+- `src/lib/device-tier.ts` picks a tier: `high` (WebGL2, fine pointer, 6+ cores) gets bloom, vignette, grain, a blurred reflector floor and DPR up to 1.75; `medium` drops post-processing, the blur and most particles; `low` (no WebGL, data saver, reduced motion, or a touch device with 4 cores or fewer) renders a static page with no canvas at all. `?tier=high|medium|low` forces one. A `PerformanceMonitor` steps `high` down to `medium` if the frame rate drops.
+- The static page is also prerendered into `dist/index.html` at build time (`scripts/prerender.mjs`), so the content is there before any JavaScript runs.
+- The 3D letters use a typeface JSON generated from Syne ExtraBold by `scripts/build-typeface.mjs` (`npm run typeface`).
 
-```
-index.html            theme bootstrap script (runs before paint to avoid a flash)
-src/
-  app.tsx             section order
-  data/               all content: projects, experience, skills, site links
-  components/         one component + one CSS module per section
-  hooks/              use-theme, use-active-section, use-reveal
-  styles/global.css   design tokens (every colour is a custom property), reset, reveal
-```
-
-Content lives entirely under `src/data/`. Adding a project is one object in `src/data/projects.ts`; the tests there check every entry has a valid `https` source URL, a valid live URL when one exists, a unique slug, tags, a two-stop cover gradient, and that every live project points at a `screenshot` that exists under `public/screenshots/`.
-
-Screenshots are produced by `npm run screenshots` (`scripts/optimize-screenshots.mjs`), which reads the 1440×900 captures from a sibling `_shots/` directory and writes 1200×750 WebP files with sharp.
-
-## Tech stack
-
-React 18 · TypeScript (strict) · Vite 6 · CSS Modules · Vitest + Testing Library · ESLint (typescript-eslint, react-hooks, jsx-a11y) · Prettier · GitHub Actions → GitHub Pages
-
-## Running locally
+## Running it
 
 ```bash
-npm ci
+npm install
 npm run dev        # http://localhost:5173
-npm run build      # type-check + production build to dist/
-npm run preview    # serve dist/
+npm run build      # typecheck, bundle, prerender into dist/
+npm run preview
 ```
 
-## Testing
+Checks: `npm run lint`, `npm run typecheck`, `npm test`, `npm run format:check`. The deploy workflow runs all four before publishing `dist/` to GitHub Pages.
 
-```bash
-npm test           # vitest run
-npm run lint       # eslint, zero warnings
-npm run typecheck  # tsc -b --noEmit
-npm run format:check
-```
+## Stack
 
-Two suites: `src/data/projects.test.ts` (data invariants) and `src/app.test.tsx` (render smoke test covering landmarks, every project card, the experience timeline, the footer credit and the theme toggle).
+React 19, TypeScript, Vite, three.js with React Three Fiber, drei and postprocessing, GSAP ScrollTrigger, Lenis, zustand, maath, CSS Modules, Vitest.
 
-## Project structure
+## Fonts
 
-```
-.github/workflows/deploy.yml   lint → typecheck → test → build → Pages
-public/                        resume PDF, monogram, favicon, og.png + og.html, 404 redirect
-public/screenshots/            one WebP per live project
-scripts/optimize-screenshots.mjs  PNG → WebP pipeline
-src/components/                about, experience, footer, hero, nav, project-card,
-                               project-cover, projects, section-heading, skills, theme-toggle
-src/data/                      projects.ts, experience.ts, skills.ts, site.ts
-src/hooks/                     use-theme.ts, use-active-section.ts, use-reveal.ts
-src/styles/global.css          tokens and base styles
-```
-
-## Roadmap and known limitations
-
-- Real-time Task Board has no hosted demo (it needs a long-lived socket server), so it keeps its generated cover and is listed as source only.
-- The contact section is a `mailto:` link rather than a form; there is no backend to post to.
-- Screenshots are desktop captures only; a mobile variant per project would need a second image set.
+Syne and Manrope (SIL Open Font License) via Google Fonts for the page; a subset of Syne ExtraBold and JetBrains Mono ship in `public/fonts/` for the 3D text.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT
