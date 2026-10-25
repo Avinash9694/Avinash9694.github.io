@@ -171,6 +171,16 @@
     border-bottom: 0;
     border-right: 1px solid var(--line);
   }
+
+  /* The row is taller than a 16:10 cover, so let the cover fill it instead. */
+  .wide:last-child:nth-child(2n + 1) .coverLink {
+    display: flex;
+  }
+
+  .wide:last-child:nth-child(2n + 1) .coverLink > * {
+    flex: 1;
+    aspect-ratio: auto;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -186,6 +196,16 @@
     flex: 0 0 38%;
     border-bottom: 0;
     border-right: 1px solid var(--line);
+  }
+
+  /* The row is taller than a 16:10 cover, so let the cover fill it instead. */
+  .wide:last-child:nth-child(3n + 1) .coverLink {
+    display: flex;
+  }
+
+  .wide:last-child:nth-child(3n + 1) .coverLink > * {
+    flex: 1;
+    aspect-ratio: auto;
   }
 
   .wide:last-child:nth-child(3n + 1) .body {
