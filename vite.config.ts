@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   base: '/',
+  // The footer renders this year first so the prerendered HTML hydrates cleanly, then the visitor's.
+  define: { __BUILD_YEAR__: JSON.stringify(new Date().getFullYear()) },
   plugins: [react()],
   build: {
     target: 'es2022',

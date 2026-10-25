@@ -1,4 +1,5 @@
 import { site } from '../../data/site';
+import { CurrentYear } from '../current-year';
 import { FileText, GitHub, LinkedIn, Mail } from '../icons';
 import styles from '../overlay.module.css';
 
@@ -31,7 +32,7 @@ export function ContactPanel() {
       </div>
       <footer className={styles.footer}>
         <span>
-          {site.name} <span aria-hidden="true">&middot;</span> {site.year}
+          {site.name} <span aria-hidden="true">&middot;</span> <CurrentYear />
         </span>
         <a href={site.source} target="_blank" rel="noopener noreferrer">
           Source

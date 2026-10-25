@@ -2,6 +2,7 @@ import { formatRange, roleYear, roles } from '../data/experience';
 import { projects } from '../data/projects';
 import { SECTIONS, hackathon, intro, site } from '../data/site';
 import { ArrowUpRight, FileText, GitHub, LinkedIn, Mail } from '../ui/icons';
+import { CurrentYear } from '../ui/current-year';
 import styles from './static-portfolio.module.css';
 
 /** The whole portfolio as one static page: what low-tier devices, crawlers and no-JS get. */
@@ -194,7 +195,7 @@ export function StaticPortfolio() {
       </main>
       <footer className={styles.footer}>
         <span>
-          {site.name} <span aria-hidden="true">&middot;</span> {site.year}
+          {site.name} <span aria-hidden="true">&middot;</span> <CurrentYear />
         </span>
         <a href={site.source} target="_blank" rel="noopener noreferrer">
           Source
