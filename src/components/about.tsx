@@ -31,15 +31,6 @@ export function About() {
         </div>
 
         <Reveal className={styles.aside} delay={140}>
-          <div className={styles.photoFrame}>
-            <img
-              className={styles.photo}
-              src="/avinash.png"
-              alt="Avinash Sahu monogram"
-              width={134}
-              height={138}
-            />
-          </div>
           <dl className={styles.facts}>
             <div>
               <dt>Based in</dt>
