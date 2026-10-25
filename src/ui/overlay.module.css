@@ -96,7 +96,15 @@
   font-size: 13px;
   letter-spacing: 0.08em;
   color: var(--text-2);
+  text-wrap: balance;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+}
+
+/* Five items only just fit a phone; tighten rather than leave one item alone on a line. */
+@media (max-width: 420px) {
+  .stack {
+    letter-spacing: 0.02em;
+  }
 }
 
 /* About */

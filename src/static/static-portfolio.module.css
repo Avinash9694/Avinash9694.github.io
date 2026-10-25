@@ -76,6 +76,14 @@
   font-size: 13px;
   letter-spacing: 0.08em;
   color: var(--text-2);
+  text-wrap: balance;
+}
+
+/* Five items only just fit a phone; tighten rather than leave one item alone on a line. */
+@media (max-width: 420px) {
+  .stack {
+    letter-spacing: 0.02em;
+  }
 }
 
 .actions {
