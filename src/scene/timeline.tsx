@@ -12,7 +12,7 @@ import {
   type MeshStandardMaterial,
   type PointLight,
 } from 'three';
-import { formatRange, roles, roleYear } from '../data/experience';
+import { roles, roleYear } from '../data/experience';
 import {
   EXPERIENCE_SECTION,
   ROLE_STATIONS,
@@ -21,7 +21,7 @@ import {
 } from '../lib/progress-map';
 import { TIMELINE_NODES, timelinePath } from '../lib/world';
 import { useSceneStore } from '../store/scene-store';
-import { DISPLAY_FONT_URL, MONO_FONT_URL } from './fonts';
+import { MONO_FONT_URL } from './fonts';
 
 const AMBER = new Color('#ffb45c');
 const CYAN = new Color('#3ec8ff');
@@ -47,12 +47,16 @@ export function Timeline() {
     roles.map(() => ({ core: null, ringA: null, ringB: null, label: null })),
   );
   const glow = useRef<PointLight>(null);
+  const root = useRef<Group>(null);
   const glowTarget = useMemo(() => new Vector3(), []);
 
   useFrame((state, rawDelta) => {
     const delta = Math.min(rawDelta, 0.1);
     const progress = useSceneStore.getState().progress;
-    const inSection = sectionFromProgress(progress) === EXPERIENCE_SECTION;
+    const section = sectionFromProgress(progress);
+    const inSection = section === EXPERIENCE_SECTION;
+    // Seen from the hero or from above at Contact it is only a cut-off tube at the edge.
+    if (root.current) root.current.visible = section >= 1 && section <= 3;
     const t = state.clock.elapsedTime;
     let brightest = 0;
     let brightestEmphasis = -1;
@@ -74,10 +78,11 @@ export function Timeline() {
         refs.ringB.rotation.y = -t * 0.25 + i;
         refs.ringB.rotation.x = 0.9 + Math.cos(t * 0.3 + i) * 0.2;
       }
-      if (refs.label) {
-        const labelScale = inSection ? 0.4 + emphasis * 0.6 : 0.0001;
-        damp3(refs.label.scale, [labelScale, labelScale, labelScale], 0.35, delta);
-      }
+    });
+    nodes.current.forEach((refs, i) => {
+      if (!refs.label) return;
+      const labelScale = inSection && i === brightest ? 1 : 0.0001;
+      damp3(refs.label.scale, [labelScale, labelScale, labelScale], 0.25, delta);
     });
     if (glow.current) {
       const node = TIMELINE_NODES[brightest] ?? [0, 0, 0];
@@ -87,7 +92,7 @@ export function Timeline() {
   });
 
   return (
-    <group>
+    <group ref={root}>
       <mesh geometry={tube}>
         <meshStandardMaterial
           color="#0a2634"
@@ -138,37 +143,17 @@ export function Timeline() {
                 metalness={0.6}
               />
             </mesh>
-            <Billboard position={[0, 0.95, 0]} follow>
+            <Billboard position={[0, 0.82, 0]} follow>
               <group ref={set('label')}>
                 <Text
                   font={MONO_FONT_URL}
-                  fontSize={0.11}
+                  fontSize={0.17}
                   color="#ffb45c"
                   anchorX="center"
                   anchorY="bottom"
-                  position={[0, 0.3, 0]}
+                  letterSpacing={0.08}
                 >
                   {roleYear(role)}
-                </Text>
-                <Text
-                  font={DISPLAY_FONT_URL}
-                  fontSize={0.24}
-                  color="#f3e6cf"
-                  anchorX="center"
-                  anchorY="bottom"
-                  position={[0, 0, 0]}
-                >
-                  {role.company}
-                </Text>
-                <Text
-                  font={MONO_FONT_URL}
-                  fontSize={0.095}
-                  color="#9fb0cc"
-                  anchorX="center"
-                  anchorY="top"
-                  position={[0, -0.08, 0]}
-                >
-                  {formatRange(role)}
                 </Text>
               </group>
             </Billboard>

@@ -1,9 +1,11 @@
 import { Center, Text3D } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { damp } from 'maath/easing';
+import { damp, damp3 } from 'maath/easing';
 import { useRef } from 'react';
 import type { Group } from 'three';
 import { pointer } from '../lib/pointer';
+import { sectionFromProgress } from '../lib/progress-map';
+import { useSceneStore } from '../store/scene-store';
 import { WORLD } from '../lib/world';
 import { site } from '../data/site';
 import { TYPEFACE_URL } from './fonts';
@@ -53,6 +55,10 @@ export function NameLetters() {
     damp(g.rotation, 'y', px * 0.22, 0.5, delta);
     damp(g.rotation, 'x', -py * 0.1, 0.5, delta);
     g.position.y = WORLD.nameCenter[1] + Math.sin(t * 0.6) * 0.06;
+    // Close-ups would only catch a cut-off slab of a letter, so the name steps aside.
+    const section = sectionFromProgress(useSceneStore.getState().progress);
+    const shown = section === 0 || section === 4 ? scale : 0.0001;
+    damp3(g.scale, [shown, shown, shown], 0.35, delta);
   });
 
   return (
