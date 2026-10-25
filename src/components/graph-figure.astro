@@ -1,4 +1,5 @@
 ---
+import GraphIsland from './graph/graph-island';
 import { createGraphView, projectForSvg, SVG_SIZE } from '../lib/graph-view';
 
 const graph = createGraphView();
@@ -30,6 +31,9 @@ const half = SVG_SIZE / 2;
         </text>
       ))}
   </svg>
+  <div class="graph-live">
+    <GraphIsland client:visible {...graph} />
+  </div>
 </div>
 
 <style>
@@ -38,7 +42,8 @@ const half = SVG_SIZE / 2;
     height: 500px;
   }
 
-  .graph-drawing {
+  .graph-drawing,
+  .graph-live {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -47,6 +52,10 @@ const half = SVG_SIZE / 2;
 
   .graph-drawing {
     overflow: visible;
+  }
+
+  .graph[data-live] .graph-drawing {
+    visibility: hidden;
   }
 
   .edges line {
@@ -85,5 +94,75 @@ const half = SVG_SIZE / 2;
     text {
       font-size: 16px;
     }
+  }
+</style>
+
+<style is:global>
+  /* The live scene renders outside this component's scope, so these are global. */
+  .graph-gate {
+    position: absolute;
+    inset: 0;
+  }
+
+  .graph-scene {
+    position: absolute;
+    inset: 0;
+    background: var(--paper);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .graph-scene[data-ready='true'] {
+    opacity: 1;
+  }
+
+  .graph-scene[data-pointer='link'] canvas {
+    cursor: pointer;
+  }
+
+  /* Let a vertical swipe scroll the page; only a horizontal drag rotates. */
+  .graph-scene,
+  .graph-scene > div,
+  .graph-scene canvas {
+    touch-action: pan-y !important;
+  }
+
+  .graph-labels {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .graph-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.2;
+    color: var(--ink);
+    text-shadow:
+      0 0 2px var(--paper),
+      0 0 2px var(--paper),
+      0 0 3px var(--paper);
+    user-select: none;
+  }
+
+  .graph-label[data-kind='tech'] {
+    display: none;
+    color: var(--muted);
+  }
+
+  .graph-label[data-kind='tech'][data-state='lit'] {
+    display: block;
+  }
+
+  .graph-label[data-state='lit'] {
+    color: var(--accent);
+  }
+
+  .graph-label[data-state='dim'] {
+    opacity: 0.3;
   }
 </style>
