@@ -1,43 +1,88 @@
 # avinash9694.github.io
 
-My personal homepage: who I am, a few things I've built, where I've worked and how to reach me.
+Personal portfolio of Avinash Sahu — software developer in Hyderabad working in React, TypeScript, Rust and the cloud.
 
 **Live:** [avinash9694.github.io](https://avinash9694.github.io/)
 
-![The homepage in light mode](docs/screenshot.png)
+![Portfolio home page](docs/screenshot.png)
 
-## Stack
+## Why I built this
 
-- [Astro](https://astro.build) 7, static output. Every word on the page is plain HTML.
-- Plain CSS: one token file (`src/styles/global.css`) plus scoped styles per component. Light by default, dark when the system asks for it.
-- React only inside the graph island, with [React Three Fiber](https://r3f.docs.pmnd.rs), drei and three.js.
-- Vitest for the layout and data logic. ESLint and Prettier, zero warnings.
-- Deployed to GitHub Pages by `.github/workflows/deploy.yml`, which runs lint, format check, typecheck, tests and the build first.
+I wanted a single page that a hiring manager can read in two minutes: what I have shipped, where, and what it was built with. The old site was a template with skill bars and stock icons; this one is hand-built, dark-first, and puts the project grid first, because the projects are the evidence.
 
-## How the graph works
+## Features
 
-The hero shows my projects and the technology each one uses as a small 3D graph.
+- Single page, six sections: hero, selected work, experience timeline, grouped skills, about, contact.
+- Sticky navigation with smooth scroll and active-section highlighting (IntersectionObserver), collapsing to a menu on small screens.
+- Dark-first theme that follows `prefers-color-scheme`, with a toggle persisted in `localStorage` and a `?theme=dark|light` override for sharing.
+- Project cards with real screenshots served as 1200px WebP (351 KB for all eight) in a fixed 16:10 box, lazy-loaded and faded in over a generated SVG cover (gradient plus a deterministic motif derived from the slug) that stays visible while the image loads or when a project has no live site.
+- A grid that never leaves an orphan: when the last card would sit alone in its row, it spans the row as a horizontal card instead, at both the 2- and 3-column breakpoints.
+- Open Graph and Twitter card image (`public/og.png`, rendered from `public/og.html`) so shared links show the hero.
+- Scroll-triggered reveal animations that are disabled entirely under `prefers-reduced-motion`.
+- Semantic landmarks, skip link, labelled icon links, visible focus rings and 40px+ touch targets.
+- Responsive from 360px up with no horizontal overflow.
+- `404.html` that redirects back to the root so stale deep links still land on the site.
 
-1. `src/data/graph.ts` is the one list of projects. The Projects section and the graph both read it, so a project's tech list is literally the graph's edges.
-2. `src/lib/layout.ts` runs a seeded force-directed layout (springs on edges, every pair pushing apart, a weak pull to the centre) **at build time**. The browser never runs a simulation; it receives fixed positions.
-3. `src/lib/projection.ts` projects those positions through the scene's starting camera into an inline SVG. That drawing is what everyone sees first, and it stays as the permanent view with reduced motion, no WebGL, data saver on, or a low-end touch device (`src/lib/render-3d.ts`).
-4. Otherwise `src/components/graph/` loads with `client:visible`, then lazily imports the three.js scene. It renders the same layout from the same camera, fades in over the drawing, and turns slowly. Hovering a node lights up its neighbours; clicking a project scrolls to its entry. Drag rotates it horizontally; the mouse wheel and vertical swipes still scroll the page. Rendering pauses when the graph is off screen or the tab is hidden.
+## Architecture
 
-The canvas is `aria-hidden`; the Projects list is the accessible version of the same information.
-
-## Running it
-
-Node 22.23 or later.
-
-```sh
-npm install
-npm run dev          # http://localhost:4321
-npm test             # layout, projection and data tests
-npm run lint
-npm run typecheck    # astro check + tsc
-npm run build        # static site in dist/
 ```
+index.html            theme bootstrap script (runs before paint to avoid a flash)
+src/
+  app.tsx             section order
+  data/               all content: projects, experience, skills, site links
+  components/         one component + one CSS module per section
+  hooks/              use-theme, use-active-section, use-reveal
+  styles/global.css   design tokens (every colour is a custom property), reset, reveal
+```
+
+Content lives entirely under `src/data/`. Adding a project is one object in `src/data/projects.ts`; the tests there check every entry has a valid `https` source URL, a valid live URL when one exists, a unique slug, tags, a two-stop cover gradient, and that every live project points at a `screenshot` that exists under `public/screenshots/`.
+
+Screenshots are produced by `npm run screenshots` (`scripts/optimize-screenshots.mjs`), which reads the 1440×900 captures from a sibling `_shots/` directory and writes 1200×750 WebP files with sharp.
+
+## Tech stack
+
+React 18 · TypeScript (strict) · Vite 6 · CSS Modules · Vitest + Testing Library · ESLint (typescript-eslint, react-hooks, jsx-a11y) · Prettier · GitHub Actions → GitHub Pages
+
+## Running locally
+
+```bash
+npm ci
+npm run dev        # http://localhost:5173
+npm run build      # type-check + production build to dist/
+npm run preview    # serve dist/
+```
+
+## Testing
+
+```bash
+npm test           # vitest run
+npm run lint       # eslint, zero warnings
+npm run typecheck  # tsc -b --noEmit
+npm run format:check
+```
+
+Two suites: `src/data/projects.test.ts` (data invariants) and `src/app.test.tsx` (render smoke test covering landmarks, every project card, the experience timeline, the footer credit and the theme toggle).
+
+## Project structure
+
+```
+.github/workflows/deploy.yml   lint → typecheck → test → build → Pages
+public/                        resume PDF, monogram, favicon, og.png + og.html, 404 redirect
+public/screenshots/            one WebP per live project
+scripts/optimize-screenshots.mjs  PNG → WebP pipeline
+src/components/                about, experience, footer, hero, nav, project-card,
+                               project-cover, projects, section-heading, skills, theme-toggle
+src/data/                      projects.ts, experience.ts, skills.ts, site.ts
+src/hooks/                     use-theme.ts, use-active-section.ts, use-reveal.ts
+src/styles/global.css          tokens and base styles
+```
+
+## Roadmap and known limitations
+
+- Real-time Task Board has no hosted demo (it needs a long-lived socket server), so it keeps its generated cover and is listed as source only.
+- The contact section is a `mailto:` link rather than a form; there is no backend to post to.
+- Screenshots are desktop captures only; a mobile variant per project would need a second image set.
 
 ## License
 
-MIT, see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
