@@ -1,0 +1,89 @@
+---
+import { createGraphView, projectForSvg, SVG_SIZE } from '../lib/graph-view';
+
+const graph = createGraphView();
+const { lines, order } = projectForSvg(graph);
+const half = SVG_SIZE / 2;
+---
+
+<div class="graph">
+  <svg
+    class="graph-drawing"
+    viewBox={`${-half} ${-half} ${SVG_SIZE} ${SVG_SIZE}`}
+    preserveAspectRatio="xMidYMid meet"
+    role="img"
+    aria-label="A graph of my projects and the technologies each one uses"
+  >
+    <g class="edges">
+      {lines.map(({ a, b }) => (
+        <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+      ))}
+    </g>
+    {order.map((n) => (
+      <circle class:list={['node', n.kind]} cx={n.x} cy={n.y} r={n.r} />
+    ))}
+    {order
+      .filter((n) => n.kind === 'project')
+      .map((n) => (
+        <text x={n.labelX} y={n.y + 9} text-anchor="middle" dominant-baseline="hanging">
+          {n.label}
+        </text>
+      ))}
+  </svg>
+</div>
+
+<style>
+  .graph {
+    position: relative;
+    height: 500px;
+  }
+
+  .graph-drawing {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .graph-drawing {
+    overflow: visible;
+  }
+
+  .edges line {
+    stroke: var(--edge);
+    stroke-opacity: 0.2;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .node.project {
+    fill: var(--ink);
+  }
+
+  .node.tech {
+    fill: var(--node-tech);
+  }
+
+  text {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: var(--paper);
+    stroke-width: 4px;
+    stroke-linejoin: round;
+  }
+
+  @media (max-width: 47.99rem) {
+    .graph {
+      height: 340px;
+      /* The drawing is wider than it is tall, so its square has empty space above. */
+      margin-top: -1.5rem;
+    }
+
+    /* The drawing scales down with the box, so its labels need to start larger. */
+    text {
+      font-size: 16px;
+    }
+  }
+</style>
