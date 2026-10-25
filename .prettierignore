@@ -1,5 +1,4 @@
 dist
 node_modules
 coverage
-docs/*.png
-public/*.pdf
+public/fonts/*.json
