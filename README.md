@@ -18,12 +18,12 @@ My personal homepage: who I am, a few things I've built, where I've worked and h
 
 The hero shows my projects and the technology each one uses as a small 3D graph.
 
-1. `src/data/graph.ts` is the one list of projects. The Work section and the graph both read it, so a project's tech list is literally the graph's edges.
+1. `src/data/graph.ts` is the one list of projects. The Projects section and the graph both read it, so a project's tech list is literally the graph's edges.
 2. `src/lib/layout.ts` runs a seeded force-directed layout (springs on edges, every pair pushing apart, a weak pull to the centre) **at build time**. The browser never runs a simulation; it receives fixed positions.
 3. `src/lib/projection.ts` projects those positions through the scene's starting camera into an inline SVG. That drawing is what everyone sees first, and it stays as the permanent view with reduced motion, no WebGL, data saver on, or a low-end touch device (`src/lib/render-3d.ts`).
 4. Otherwise `src/components/graph/` loads with `client:visible`, then lazily imports the three.js scene. It renders the same layout from the same camera, fades in over the drawing, and turns slowly. Hovering a node lights up its neighbours; clicking a project scrolls to its entry. Drag rotates it horizontally; the mouse wheel and vertical swipes still scroll the page. Rendering pauses when the graph is off screen or the tab is hidden.
 
-The canvas is `aria-hidden`; the Work list is the accessible version of the same information.
+The canvas is `aria-hidden`; the Projects list is the accessible version of the same information.
 
 ## Running it
 

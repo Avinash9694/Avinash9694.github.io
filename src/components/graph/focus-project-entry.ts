@@ -1,8 +1,8 @@
 const FLASH_CLASS = 'is-flashed';
 const timers = new WeakMap<Element, number>();
 
-/** Scroll to a Work entry and tint it briefly so the eye lands on the right one. */
-export function focusWorkEntry(anchor: string): void {
+/** Scroll to a project entry and tint it briefly so the eye lands on the right one. */
+export function focusProjectEntry(anchor: string): void {
   const el = document.getElementById(anchor);
   if (!el) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

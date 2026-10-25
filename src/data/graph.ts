@@ -1,5 +1,5 @@
 /**
- * One source for the Work section and the hero graph, so the two cannot drift:
+ * One source for the Projects section and the hero graph, so the two cannot drift:
  * every project lists the technology it actually uses, and those lists are the
  * graph's edges.
  */
@@ -22,27 +22,20 @@ export const techs = {
 
 export type TechId = keyof typeof techs;
 
-/** featured: large entry with a screenshot. listed: plain list entry. older: named in the closing line only. */
-export type ProjectTier = 'featured' | 'listed' | 'older';
-
 export interface Project {
   slug: string;
   title: string;
-  tier: ProjectTier;
   summary: string;
   live: string;
   code: string;
   tech: TechId[];
-  image?: { src: string; alt: string; width: number; height: number };
-  /** How the closing line refers to an older project. */
-  phrase?: string;
+  image: { src: string; alt: string; width: number; height: number };
 }
 
 export const projects: Project[] = [
   {
     slug: 'iam-policy-analyzer',
     title: 'IAM Policy Analyzer',
-    tier: 'featured',
     summary:
       "Paste an AWS IAM policy and it tells you what's risky: wildcards, ways to escalate privileges, public access, missing conditions. Each problem comes with a safer version of the statement you can copy. It runs entirely in your browser.",
     live: 'https://avinash9694.github.io/iam-policy-analyzer/',
@@ -58,78 +51,113 @@ export const projects: Project[] = [
   {
     slug: 'cloud-audit-mcp',
     title: 'Cloud Audit MCP Server',
-    tier: 'listed',
     summary:
       'Lets Claude or Cursor check an AWS account for common security problems through read-only tools. It ships with sample data, so you can try it without credentials.',
     live: 'https://avinash9694.github.io/cloud-audit-mcp/',
     code: 'https://github.com/Avinash9694/cloud-audit-mcp',
     tech: ['typescript', 'node', 'mcp', 'aws', 'iam'],
+    image: {
+      src: '/screenshots/cloud-audit-mcp.webp',
+      alt: 'The Cloud Audit MCP Server documentation page, with install instructions and a sample conversation.',
+      width: 1200,
+      height: 750,
+    },
   },
   {
     slug: 'sse-stream-inspector',
     title: 'SSE Stream Inspector',
-    tier: 'listed',
     summary:
       'A debugger for the event streams chat backends send. I built it after an event that was quietly renamed in one place cost me a day.',
     live: 'https://avinash9694.github.io/sse-stream-inspector/',
     code: 'https://github.com/Avinash9694/sse-stream-inspector',
     tech: ['react', 'typescript', 'sse'],
+    image: {
+      src: '/screenshots/sse-stream-inspector.webp',
+      alt: 'SSE Stream Inspector showing a captured stream as a timeline of events, with one event open for inspection.',
+      width: 1200,
+      height: 750,
+    },
   },
   {
     slug: 'northline',
     title: 'Northline',
-    tier: 'listed',
     summary:
       "A full e-commerce app with an Express and MongoDB backend. The demo runs entirely in your browser, so there's no server to wait for.",
     live: 'https://avinash9694.github.io/Ecommerce-APP/',
     code: 'https://github.com/Avinash9694/Ecommerce-APP',
     tech: ['react', 'typescript', 'node', 'express', 'mongodb'],
+    image: {
+      src: '/screenshots/Ecommerce-APP.webp',
+      alt: 'The Northline storefront home page, with featured products and shopping categories.',
+      width: 1200,
+      height: 750,
+    },
   },
   {
     slug: 'iac-diff-viewer',
     title: 'IaC Diff Viewer',
-    tier: 'listed',
     summary:
       'Compares two CloudFormation or Terraform files resource by resource and points out the risky changes, like a database being removed.',
     live: 'https://avinash9694.github.io/iac-diff-viewer/',
     code: 'https://github.com/Avinash9694/iac-diff-viewer',
     tech: ['rust', 'react', 'typescript', 'terraform', 'aws'],
+    image: {
+      src: '/screenshots/iac-diff-viewer.webp',
+      alt: 'IaC Diff Viewer listing changed resources grouped by risk, with a removed database selected.',
+      width: 1200,
+      height: 750,
+    },
   },
   {
     slug: 'taste-of-india-hub',
     title: 'Taste of India Hub',
-    tier: 'older',
-    phrase: 'a recipe site',
-    summary: 'A recipe site with ingredient search and saved checklists.',
+    summary:
+      'A recipe site for Indian home cooking. You can search by ingredient, filter by region and diet, and tick off ingredients as you cook. I first built it in 2023 and rebuilt it properly this year.',
     live: 'https://avinash9694.github.io/TasteOfIndiaHub/',
     code: 'https://github.com/Avinash9694/TasteOfIndiaHub',
     tech: ['react', 'typescript', 'firebase'],
+    image: {
+      src: '/screenshots/TasteOfIndiaHub.webp',
+      alt: 'The Taste of India Hub home page, with a large heading and a grid of dish photos.',
+      width: 1200,
+      height: 750,
+    },
   },
   {
     slug: 'laundry-cart',
     title: 'Laundry Cart',
-    tier: 'older',
-    phrase: 'a laundry ordering app',
-    summary: 'Order and track laundry pickups.',
+    summary:
+      'Ordering for a laundry service. You pick garments and wash types, see the price as you go, and then follow the order from pickup to delivery. The API lives in a separate repo.',
     live: 'https://avinash9694.github.io/Laundry-cart-frontend/',
     code: 'https://github.com/Avinash9694/Laundry-cart-frontend',
     tech: ['react', 'typescript', 'node', 'express', 'mongodb'],
+    image: {
+      src: '/screenshots/Laundry-cart-frontend.webp',
+      alt: 'The Laundry Cart dashboard, showing orders in progress, total spent and recent orders.',
+      width: 1200,
+      height: 750,
+    },
   },
   {
     slug: '3d-virtual-environment',
     title: '3D Virtual Environment',
-    tier: 'older',
-    phrase: 'a small three.js world',
-    summary: 'A small world you can walk around in.',
+    summary:
+      'A small three.js world you can walk around in as one of three characters, with the keyboard or a touch joystick. Mostly an excuse to learn WebGL properly.',
     live: 'https://avinash9694.github.io/3D-Virtual-Environment/',
     code: 'https://github.com/Avinash9694/3D-Virtual-Environment',
     tech: ['three', 'typescript'],
+    image: {
+      src: '/screenshots/3D-Virtual-Environment.webp',
+      alt: 'A robot avatar standing in a paved plaza with trees, houses and a cutaway room.',
+      width: 1200,
+      height: 750,
+    },
   },
 ];
 
-/** The id of the element in the Work section that a project's graph node scrolls to. */
-export function workAnchor(project: Pick<Project, 'slug' | 'tier'>): string {
-  return project.tier === 'older' ? 'older-work' : `work-${project.slug}`;
+/** The id of the project's entry in the Projects section, which its graph node scrolls to. */
+export function projectAnchor(project: Pick<Project, 'slug'>): string {
+  return `project-${project.slug}`;
 }
 
 export type GraphNodeKind = 'project' | 'tech';
@@ -153,7 +181,7 @@ export function buildGraph(list: Project[] = projects): Graph {
     id: p.slug,
     label: p.title,
     kind: 'project',
-    anchor: workAnchor(p),
+    anchor: projectAnchor(p),
   }));
   const techIndex = new Map<TechId, number>();
   for (const id of Object.keys(techs) as TechId[]) {

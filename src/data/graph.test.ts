@@ -1,19 +1,23 @@
 import { describe, expect, it } from 'vitest';
-import { buildGraph, projects, techs, workAnchor } from './graph';
+import { buildGraph, projectAnchor, projects, techs } from './graph';
+
+const shippedScreenshots = new Set(
+  Object.keys(import.meta.glob('../../public/screenshots/*.webp')).map((path) =>
+    path.replace('../../public', ''),
+  ),
+);
 
 describe('projects', () => {
   it('has unique slugs', () => {
     expect(new Set(projects.map((p) => p.slug)).size).toBe(projects.length);
   });
 
-  it('has exactly one featured project, with an image', () => {
-    const featured = projects.filter((p) => p.tier === 'featured');
-    expect(featured).toHaveLength(1);
-    expect(featured[0]?.image?.src).toMatch(/^\/screenshots\/.+\.webp$/);
-  });
-
-  it('gives every older project a phrase for the closing line', () => {
-    for (const p of projects.filter((q) => q.tier === 'older')) expect(p.phrase).toBeTruthy();
+  it('gives every project a screenshot that exists', () => {
+    for (const p of projects) {
+      expect(p.image.src, p.slug).toMatch(/^\/screenshots\/.+\.webp$/);
+      expect(shippedScreenshots.has(p.image.src), p.image.src).toBe(true);
+      expect(p.image.alt.length, p.slug).toBeGreaterThan(20);
+    }
   });
 
   it('links to Pages demos and GitHub sources', () => {
@@ -45,11 +49,11 @@ describe('buildGraph', () => {
     });
   });
 
-  it('points project nodes at their Work entry', () => {
+  it('points project nodes at their Projects entry', () => {
     for (const p of projects) {
       const node = graph.nodes.find((n) => n.id === p.slug);
-      expect(node?.anchor).toBe(workAnchor(p));
+      expect(node?.anchor).toBe(projectAnchor(p));
     }
-    expect(workAnchor({ slug: 'x', tier: 'older' })).toBe('older-work');
+    expect(projectAnchor({ slug: 'x' })).toBe('project-x');
   });
 });

@@ -11,7 +11,7 @@ import {
 import { at } from '../../lib/at';
 import type { Vec3 } from '../../lib/layout';
 import { cameraPosition, fieldOfView, type View } from '../../lib/projection';
-import { focusWorkEntry } from './focus-work-entry';
+import { focusProjectEntry } from './focus-project-entry';
 import type { GraphSceneProps } from './types';
 import { useActive, useThemeColors, type GraphColors } from './use-graph-environment';
 
@@ -209,7 +209,7 @@ function Graph({
           e.stopPropagation();
           // A drag that happens to end on a node is a rotation, not a click.
           if (e.delta > 6 || !node.anchor) return;
-          focusWorkEntry(node.anchor);
+          focusProjectEntry(node.anchor);
         };
         return (
           <group
